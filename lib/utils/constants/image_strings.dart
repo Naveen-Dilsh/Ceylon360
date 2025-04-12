@@ -4,14 +4,16 @@ class APPImages {
   static const String darkAppLogo = "assets/logos/Google.png";
   static const String lightAppLogo = "assets/logos/Google.png";
 
+  static const String backgroundImage = "assets/images/onBoarding_images/back.jpg";
+
   // -- Social Logos
   static const String google = "assets/logos/Google.png";
   static const String facebook = "assets/logos/Facebook.png";
 
   // -- OnBoarding Images
-  static const String onBoardingImage1 = "assets/images/on_boarding_images/boy.gif";
-  static const String onBoardingImage2 = "assets/images/on_boarding_images/listen-to-17266_512.gif";
-  static const String onBoardingImage3 = "assets/images/on_boarding_images/super.gif";
+  static const String onBoardingImage1 = "assets/images/onBoarding_images/Onboard1.gif";
+  static const String onBoardingImage2 = "assets/images/onBoarding_images/Onboard1.gif";
+  static const String onBoardingImage3 = "assets/images/onBoarding_images/Onboard1.gif";
 
   // -- Animation Images
   static const String productsIllustration = "assets/animations/boy.gif";
