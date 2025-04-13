@@ -25,4 +25,5 @@ class APPImages {
 
   // --
   static const String docerAnimation = "assets/logos/Facebook.png";
+  static const String beachBackground = "assets/images/onBoarding_images/back.jpg";
 }
