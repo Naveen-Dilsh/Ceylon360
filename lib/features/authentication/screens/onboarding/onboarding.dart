@@ -4,17 +4,23 @@ import 'package:ceyloan_360/features/authentication/screens/onboarding/widgets/o
 import 'package:ceyloan_360/features/authentication/screens/onboarding/widgets/onboarding_skip.dart';
 import 'package:ceyloan_360/utils/constants/image_strings.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../controllers/onboarding_controller.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(OnboardingController());
     return Scaffold(
       body: Stack(
         children: [
           /// Horizontal Scrollable Pages
           PageView(
+            controller: controller.pageController,
+            onPageChanged: controller.updatePageIndicator,
             children: const [
               OnBoardingPage(
                 image: APPImages.onBoardingImage1,

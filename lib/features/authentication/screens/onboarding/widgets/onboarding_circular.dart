@@ -1,3 +1,4 @@
+import 'package:ceyloan_360/features/authentication/controllers/onboarding_controller.dart';
 import 'package:ceyloan_360/utils/constants/colors.dart';
 import 'package:ceyloan_360/utils/constants/sizes.dart';
 import 'package:ceyloan_360/utils/device/device_utility.dart';
@@ -17,7 +18,7 @@ class OnBoardingNextButton extends StatelessWidget {
         right: APPSizes.defaultSpace,
         bottom: APPDeviceUtils.getBottomNavigationBarHeight(),
         child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () => OnboardingController.instance.nextPage(),
             style: ElevatedButton.styleFrom(
                 shape: const CircleBorder(), backgroundColor: dark ? APPColors.primary : APPColors.black),
             child: const Icon(Iconsax.arrow_right_3)));
