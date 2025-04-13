@@ -1,3 +1,4 @@
+import 'package:ceyloan_360/features/authentication/controllers/onboarding_controller.dart';
 import 'package:ceyloan_360/utils/constants/colors.dart';
 import 'package:ceyloan_360/utils/constants/sizes.dart';
 import 'package:ceyloan_360/utils/device/device_utility.dart';
@@ -12,13 +13,15 @@ class OnBoardingDotNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = OnboardingController.instance;
     final dark = APPHelperFunctions.isDarkMode(context);
 
     return Positioned(
         bottom: APPDeviceUtils.getBottomNavigationBarHeight() + 25,
         left: APPSizes.defaultSpace,
         child: SmoothPageIndicator(
-          controller: PageController(),
+          controller: controller.pageController,
+          onDotClicked: controller.dotNavigationClick,
           count: 3,
           effect: ExpandingDotsEffect(activeDotColor: dark ? APPColors.light : APPColors.dark, dotHeight: 6),
         ));
