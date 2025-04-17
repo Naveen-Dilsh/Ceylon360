@@ -1,7 +1,8 @@
-import 'package:ceyloan_360/features/authentication/screens/onboarding/onboarding.dart';
 import 'package:ceyloan_360/utils/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import 'utils/constants/colors.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -12,7 +13,9 @@ class App extends StatelessWidget {
       themeMode: ThemeMode.system,
       theme: CAppTheme.lightTheme,
       darkTheme: CAppTheme.darkTheme,
-      home: const OnboardingScreen(),
+      // home: const OnboardingScreen(),
+      home: const Scaffold(
+          backgroundColor: APPColors.primary, body: Center(child: CircularProgressIndicator(color: Colors.white))),
     );
   }
 }
