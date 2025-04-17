@@ -1,208 +1,65 @@
+import 'package:ceyloan_360/features/authentication/screens/signup/signup.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-
 import '../../../../../utils/constants/sizes.dart';
 
-class TLoginForm extends StatefulWidget {
-  const TLoginForm({
+class APPLoginForm extends StatelessWidget {
+  const APPLoginForm({
     super.key,
   });
-
-  @override
-  State<TLoginForm> createState() => _TLoginFormState();
-}
-
-class _TLoginFormState extends State<TLoginForm> {
-  bool _obscurePassword = true;
-  bool _rememberMe = false;
-
   @override
   Widget build(BuildContext context) {
     return Form(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: APPSizes.spaceBtwSections),
+        padding: EdgeInsets.symmetric(vertical: APPSizes.spaceBtwSections),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Email Field
+            /// Email
             TextFormField(
-              decoration: InputDecoration(
-                labelText: "Email",
-                hintText: "Enter your email",
-                prefixIcon: Container(
-                  padding: const EdgeInsets.all(APPSizes.sm),
-                  child: Icon(
-                    Iconsax.direct_right,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(APPSizes.inputFieldRadius),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(APPSizes.inputFieldRadius),
-                  borderSide: BorderSide(
-                    color: Theme.of(context).dividerColor,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(APPSizes.inputFieldRadius),
-                  borderSide: BorderSide(
-                    color: Theme.of(context).primaryColor,
-                    width: 2,
-                  ),
-                ),
-              ),
-            ),
-
+              decoration: const InputDecoration(prefixIcon: Icon(Iconsax.direct_right), labelText: "Email"),
+            ), // TextFormField
             const SizedBox(height: APPSizes.spaceBtwInputFields),
 
-            // Password Field
+            /// Password
             TextFormField(
-              obscureText: _obscurePassword,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
+                prefixIcon: Icon(Iconsax.password_check),
                 labelText: "Password",
-                hintText: "Enter your password",
-                prefixIcon: Container(
-                  padding: const EdgeInsets.all(APPSizes.sm),
-                  child: Icon(
-                    Iconsax.password_check,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _obscurePassword = !_obscurePassword;
-                    });
-                  },
-                  icon: Icon(
-                    _obscurePassword ? Iconsax.eye_slash : Iconsax.eye,
-                    color: Colors.grey,
-                  ),
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(APPSizes.inputFieldRadius),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(APPSizes.inputFieldRadius),
-                  borderSide: BorderSide(
-                    color: Theme.of(context).dividerColor,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(APPSizes.inputFieldRadius),
-                  borderSide: BorderSide(
-                    color: Theme.of(context).primaryColor,
-                    width: 2,
-                  ),
-                ),
-              ),
-            ),
-
+                suffixIcon: Icon(Iconsax.eye_slash),
+              ), // InputDecoration
+            ), // TextFormField
             const SizedBox(height: APPSizes.spaceBtwInputFields / 2),
 
-            // Remember Me & Forget Password
+            /// Remember Me & Forget Password
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Remember Me
+                /// Remember Me
                 Row(
                   children: [
-                    SizedBox(
-                      width: 24,
-                      height: 24,
-                      child: Checkbox(
-                        value: _rememberMe,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        activeColor: Theme.of(context).primaryColor,
-                        onChanged: (value) {
-                          setState(() {
-                            _rememberMe = value ?? false;
-                          });
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: APPSizes.sm),
-                    Text(
-                      "Remember me",
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
+                    Checkbox(value: true, onChanged: (value) {}),
+                    const Text("remember me"),
                   ],
-                ),
-
-                // Forget Password
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    "Forgot Password?",
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                ),
+                ), // Row
+                /// Forget Password
+                TextButton(onPressed: () {}, child: const Text("forgetPassword")),
               ],
-            ),
-
+            ), // Row
             const SizedBox(height: APPSizes.spaceBtwSections),
 
-            // Sign In Button
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  foregroundColor: Colors.white,
-                  elevation: 1,
-                  padding: const EdgeInsets.symmetric(vertical: APPSizes.md),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(APPSizes.buttonRadius),
-                  ),
-                ),
-                child: Text(
-                  "Sign In",
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-              ),
-            ),
-
+            /// Sign In Action
+            SizedBox(width: double.infinity, child: ElevatedButton(onPressed: () {}, child: const Text("Sign In"))),
             const SizedBox(height: APPSizes.spaceBtwItems),
 
-            // Create Account Button
+            /// Create Account Button
             SizedBox(
-              width: double.infinity,
-              child: OutlinedButton(
-                onPressed: () {},
-                style: OutlinedButton.styleFrom(
-                  elevation: 0,
-                  padding: const EdgeInsets.symmetric(vertical: APPSizes.md),
-                  side: BorderSide(
-                    color: Theme.of(context).primaryColor,
-                    width: 1.5,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(APPSizes.buttonRadius),
-                  ),
-                ),
-                child: Text(
-                  "Create Account",
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+                width: double.infinity,
+                child: OutlinedButton(
+                    onPressed: () => Get.to(() => const SignupScreen()), child: const Text("createAccount"))),
+          ], // Column children
+        ), // Column
+      ), // Padding
     );
-  }
+  } // build
 }
