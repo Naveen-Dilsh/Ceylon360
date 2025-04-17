@@ -1,7 +1,9 @@
 import 'package:ceyloan_360/features/authentication/screens/signup/widgets/terms_condition_checkbox.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/helpers/helper_functions.dart';
+import '../verify_email.dart';
 
 class APPSignUpForm extends StatelessWidget {
   const APPSignUpForm({
@@ -89,7 +91,7 @@ class APPSignUpForm extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () => Get.to(() => const VerifyEmailScreen()),
               child: const Text("Create Account"),
             ),
           ),
