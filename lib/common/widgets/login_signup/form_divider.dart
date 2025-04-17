@@ -1,16 +1,18 @@
+import 'package:ceyloan_360/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
 import '../../../utils/constants/colors.dart';
 
 class TFormDivider extends StatelessWidget {
   const TFormDivider({
     super.key,
-    required this.dark,
+    required this.dividerText,
   });
 
-  final bool dark;
+  final String dividerText;
 
   @override
   Widget build(BuildContext context) {
+    final dark = APPHelperFunctions.isDarkMode(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -32,13 +34,7 @@ class TFormDivider extends StatelessWidget {
               width: 0.5,
             ),
           ),
-          child: Text(
-            "or sign in with",
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  fontWeight: FontWeight.w500,
-                  color: dark ? Colors.white70 : APPColors.primary,
-                ),
-          ),
+          child: Text(dividerText, style: Theme.of(context).textTheme.labelMedium),
         ),
         Flexible(
           child: Divider(
