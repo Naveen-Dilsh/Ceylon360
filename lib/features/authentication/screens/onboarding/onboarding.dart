@@ -6,7 +6,7 @@ import 'package:ceyloan_360/utils/constants/image_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../controllers/onboarding_controller.dart';
+import '../../controllers/onboarding/onboarding_controller.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});

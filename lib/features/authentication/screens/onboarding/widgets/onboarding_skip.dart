@@ -1,4 +1,4 @@
-import 'package:ceyloan_360/features/authentication/controllers/onboarding_controller.dart';
+import 'package:ceyloan_360/features/authentication/controllers/onboarding/onboarding_controller.dart';
 import 'package:ceyloan_360/utils/constants/sizes.dart';
 import 'package:ceyloan_360/utils/device/device_utility.dart';
 import 'package:flutter/material.dart';
