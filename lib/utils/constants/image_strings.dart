@@ -18,7 +18,7 @@ class APPImages {
   // -- Animation Images
   static const String productsIllustration = "assets/animations/boy.gif";
   static const String productsSaleIllustration = "assets/animations/boy.gif";
-  static const String staticSuccessIllustration = "assets/animations/boy.gif";
+  static const String staticSuccessIllustration = "assets/logos/Google.png";
   static const String deliveredInPlaneIllustration = "assets/animations/boy.gif";
   static const String deliveredEmailIllustration = "assets/images/onBoarding_images/Onboard1.gif";
   static const String verifyIllustration = "assets/animations/boy.gif";

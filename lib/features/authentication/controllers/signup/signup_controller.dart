@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../data/repositories/authentication/authentication_repository.dart';
+import '../../../../data/repositories/user/user_repository.dart';
 import '../../../../data/services/network_manager.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/popups/fullScreen_loader.dart';
 import '../../../../utils/popups/loaders.dart';
+import '../../models/user_model.dart';
+import '../../screens/signup/verify_email.dart';
 
 class SignupController extends GetxController {
   static SignupController get instance => Get.find();
@@ -20,17 +24,23 @@ class SignupController extends GetxController {
   GlobalKey<FormState> signupFormKey = GlobalKey<FormState>(); //form key for form validation
 
   ///-- SIGNUP FORM CONTROLLER --///
-  Future<void> signup() async {
+  void signup() async {
     try {
       // start Loading
-      APPFullScreenLoader.openLoadingDialog('We are processing Your information...', APPImages.docerAnimation);
+      // APPFullScreenLoader.openLoadingDialog('We are processing Your information...', APPImages.docerAnimation);
 
       // check Internet Connection
       final isConnected = await NetworkManager.instance.isConnected();
-      if (!isConnected) return;
+      if (!isConnected) {
+        //Remove Loader
+        APPFullScreenLoader.stopLoading();
+        return;
+      }
 
       // Form Validation
       if (!signupFormKey.currentState!.validate()) {
+        //Remove Loader
+        APPFullScreenLoader.stopLoading();
         return;
       }
 
@@ -44,18 +54,36 @@ class SignupController extends GetxController {
       }
 
       // Register user in the firebase Authentication & Save user data in Firebase
+      final UserCredential =
+          await AuthenticationRepository.instance.registerWithEmailAndPassword(email.text.trim(), password.text.trim());
 
       // Save Authenticated user data in the Firebase Firestore
+      final newUser = UserModel(
+        id: UserCredential.user!.uid,
+        email: email.text.trim(),
+        firstName: firstName.text.trim(),
+        lastName: lastName.text.trim(),
+        username: username.text.trim(),
+        phoneNumber: phoneNumber.text.trim(),
+        profilePicture: '',
+      );
+
+      final userRepository = Get.put(UserRepository());
+      await userRepository.saveUserRecord(newUser);
+
+      //Remove Loader
+      APPFullScreenLoader.stopLoading();
 
       // Show success message
+      APPLoaders.successSnackBar(title: 'Congratulations', message: 'Account created successfully');
 
       // Move to verify Email screen
+      Get.to(() => const VerifyEmailScreen());
     } catch (e) {
-      // Show some Generic Error to the user
-      APPLoaders.errorSnackBar(title: 'oh Snap!', message: e.toString());
-    } finally {
       // Remove Loader
       APPFullScreenLoader.stopLoading();
+      // Show some Generic Error to the user
+      APPLoaders.errorSnackBar(title: 'oh Snap!', message: e.toString());
     }
   }
 }
