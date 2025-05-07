@@ -28,7 +28,7 @@ class AuthenticationRepository extends GetxController {
     final user = _auth.currentUser;
     if (user != null) {
       if (user.emailVerified) {
-        Get.offAll(() => const Home());
+        Get.offAll(() => const HomeScreen());
       } else {
         Get.offAll(() => VerifyEmailScreen(
               email: _auth.currentUser?.email,
@@ -43,17 +43,18 @@ class AuthenticationRepository extends GetxController {
           : Get.offAll(() => const OnboardingScreen());
     }
 
-    deviceStorage.writeIfNull('IsFirstTime', true);
-    deviceStorage.read('IsFirstTime') != true
-        ? Get.offAll(() => const LoginScreen())
-        : Get.offAll(() => const OnboardingScreen());
+    // Remove this duplicate code block:
+    // deviceStorage.writeIfNull('IsFirstTime', true);
+    // deviceStorage.read('IsFirstTime') != true
+    //    ? Get.offAll(() => const LoginScreen())
+    //    : Get.offAll(() => const OnboardingScreen());
   }
 
   /*--------------------------------Email & Password sign in--------------------------------*/
   /// [EmailAuthentication] - SignIn
-  Future<void> sendEmailVerification() async {
+  Future<UserCredential> loginWithEmailAndPassword(String email, String password) async {
     try {
-      await _auth.currentUser?.sendEmailVerification();
+      return await _auth.signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
       throw APPFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
@@ -85,6 +86,22 @@ class AuthenticationRepository extends GetxController {
   }
 
   /// [EmailAuthentication] - Mail Verification
+  Future<void> sendEmailVerification() async {
+    try {
+      await _auth.currentUser?.sendEmailVerification();
+    } on FirebaseAuthException catch (e) {
+      throw APPFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw APPFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const APPFormatException();
+    } on APPPlatformException catch (e) {
+      throw APPPlatformException(e.code).message;
+    } catch (e) {
+      throw "something went wrong. Please try again later";
+    }
+  }
+
   /// [ReAuthenticate] - ReAuthenticate User
   /// [EmailAuthentication] - Forget Password
   /*--------------------------------Federated identity & social sign-in--------------------------------*/

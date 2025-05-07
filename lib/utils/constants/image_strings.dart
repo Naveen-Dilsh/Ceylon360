@@ -22,6 +22,7 @@ class APPImages {
   static const String deliveredInPlaneIllustration = "assets/animations/boy.gif";
   static const String deliveredEmailIllustration = "assets/images/onBoarding_images/Onboard1.gif";
   static const String verifyIllustration = "assets/animations/boy.gif";
+  static const String doneAnimation = "assets/animations/boy.gif";
 
   // --
   static const String docerAnimation = "assets/logos/Facebook.png";
