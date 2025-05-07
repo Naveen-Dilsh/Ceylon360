@@ -1,5 +1,5 @@
-import 'package:ceyloan_360/data/services/network_manager.dart';
 import 'package:get/get.dart';
+import '../data/services/network_manager.dart';
 
 class GeneralBindings extends Bindings {
   @override

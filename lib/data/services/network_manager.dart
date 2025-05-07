@@ -1,4 +1,3 @@
-/// Manages the network connectivity states and provides methods to check and handle connectivity changes.
 import 'package:ceyloan_360/utils/popups/loaders.dart';
 import "package:connectivity_plus/connectivity_plus.dart";
 import 'package:get/get.dart';
