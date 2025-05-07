@@ -1,3 +1,4 @@
+import 'package:ceyloan_360/utils/formatters/formatter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
@@ -19,6 +20,31 @@ class UserModel {
     required this.phoneNumber,
     required this.profilePicture,
   });
+
+  String get fullName => '$firstName $lastName';
+
+  String get formattedPhoneNo => APPFormatter.formatPhoneNumber(phoneNumber);
+
+  static List<String> nameParts(fullName) => fullName.split(' ');
+
+  static String generateUsername(fullName) {
+    List<String> nameParts = fullName.split(' ');
+    String firstName = nameParts[0].toLowerCase();
+    String lastName = nameParts.length > 1 ? nameParts[1].toLowerCase() : '';
+    String camelCaseUsername = '$firstName$lastName';
+    String usernameWithPrefix = "cwt_$camelCaseUsername";
+    return usernameWithPrefix;
+  }
+
+  static UserModel empty() => UserModel(
+        id: '',
+        firstName: '',
+        lastName: '',
+        username: '',
+        email: '',
+        phoneNumber: '',
+        profilePicture: '',
+      );
 
   static String formatDate(DateTime date) {
     return DateFormat('dd-MM-yyyy').format(date); // Customize the date format as needed
@@ -49,7 +75,6 @@ class UserModel {
   // Convert model to JSON for Firestore storage
   Map<String, dynamic> toJson() {
     return {
-      'Id': id,
       'FirstName': firstName,
       'LastName': lastName,
       'Username': username,

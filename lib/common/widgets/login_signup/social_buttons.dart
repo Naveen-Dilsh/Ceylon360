@@ -34,7 +34,7 @@ class APPSocialButtons extends StatelessWidget {
             ],
           ),
           child: IconButton(
-            onPressed: () {},
+            onPressed: () => controller.googleSignIn(),
             padding: const EdgeInsets.all(12),
             icon: const Image(
               width: APPSizes.iconMd,
