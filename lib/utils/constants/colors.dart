@@ -3,45 +3,57 @@ import 'package:flutter/material.dart';
 class APPColors {
   APPColors._();
 
-  // App Basic Colors
-  static const Color primary = Color(0xFF4b68ff);
-  static const Color secondary = Color(0xFFFFE24B);
-  static const Color accent = Color(0xFFb0c7ff);
+  // App Basic Colors - Updated for Ceylon 360 Tourism Theme
+  static const Color primary = Color(0xFF1A7D5A); // Ceylon Tea Green
+  static const Color secondary = Color(0xFFFF9E1B); // Sunset Orange
+  static const Color accent = Color(0xFF60C0CB); // Ocean Blue
+
+  // Additional Ceylon Theme Colors
+  static const Color ceylonRed = Color(0xFFD12E42); // Reddish tone from flag
+  static const Color ceylonYellow = Color(0xFFFFD639); // Cultural gold
+  static const Color ceylonTeal = Color(0xFF008080); // Coastal water
+  static const Color ceylonCoral = Color(0xFFFF7F50); // Beach sunset
+  static const Color ceylonSand = Color(0xFFF5DEB3); // Beach sand
 
   //Gradient Colors
-  static const Gradient linerGradient = LinearGradient(
-      begin: Alignment(0.0, 0.0),
-      end: Alignment(0.707, -0.707),
-      colors: [Color(0xffff9a9e), Color(0xfffad0c4), Color(0xfffac9c4)]);
+  static const Gradient ceylonSunriseGradient = LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [Color(0xFFFF9E1B), Color(0xFFFFD639), Color(0xFFF5DEB3)]);
+
+  static const Gradient ceylonOceanGradient = LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [Color(0xFF1A7D5A), Color(0xFF60C0CB), Color(0xFF008080)]);
 
   // Text Colors
   static const Color textPrimary = Color(0xFF333333);
-  static const Color textSecondary = Color(0xFF6C757D);
+  static const Color textSecondary = Color.fromARGB(255, 108, 125, 114);
   static const Color textWhite = Colors.white;
 
   // Background Colors
-  static const Color light = Color(0xFFF6F6F6);
+  static const Color light = Color(0xFFF8F5F2); // Subtle off-white
   static const Color dark = Color(0xFF272727);
-  static const Color primaryBackground = Color(0xFFF3F5FF);
+  static const Color primaryBackground = Color(0xFFE6F2EE); // Light green tint
 
   // Background Container Colors
-  static const Color lightContainer = Color(0xFFF6F6F6);
+  static const Color lightContainer = Color(0xFFF8F5F2);
   static Color darkContainer = APPColors.white.withOpacity(0.1);
 
   // Button Colors
-  static const Color buttonPrimary = Color(0xFF4b68ff);
-  static const Color buttonSecondary = Color(0xFF6C757D);
+  static const Color buttonPrimary = Color(0xFF1A7D5A);
+  static const Color buttonSecondary = Color(0xFFFF9E1B);
   static const Color buttonDisabled = Color(0xFFC4C4C4);
 
   // Border Colors
-  static const Color borderPrimary = Color(0xFF9099D9);
+  static const Color borderPrimary = Color(0xFF1A7D5A);
   static const Color borderSecondary = Color(0xFFE6E6E6);
 
   // Error and Validation Colors
   static const Color error = Color(0xFFD32F2F);
   static const Color success = Color(0xFF388E3C);
-  static const Color warning = Color(0xFFF57C00);
-  static const Color info = Color(0xFF1976D2);
+  static const Color warning = Color(0xFFFF9E1B); // Using sunset orange
+  static const Color info = Color(0xFF60C0CB); // Using ocean blue
 
   // Neutral Shades
   static const Color black = Color(0xFF232323);
