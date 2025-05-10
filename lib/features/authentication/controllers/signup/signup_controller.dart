@@ -33,14 +33,14 @@ class SignupController extends GetxController {
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) {
         //Remove Loader
-        APPFullScreenLoader.stopLoading();
+        // APPFullScreenLoader.stopLoading();
         return;
       }
 
       // Form Validation
       if (!signupFormKey.currentState!.validate()) {
         //Remove Loader
-        APPFullScreenLoader.stopLoading();
+        // APPFullScreenLoader.stopLoading();
         return;
       }
 

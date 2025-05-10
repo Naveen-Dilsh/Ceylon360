@@ -1,5 +1,5 @@
-import 'package:ceyloan_360/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
+import '../../../utils/helpers/helper_functions.dart';
 import '../../../utils/constants/colors.dart';
 
 class TFormDivider extends StatelessWidget {
@@ -13,35 +13,59 @@ class TFormDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = APPHelperFunctions.isDarkMode(context);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Flexible(
-          child: Divider(
-            color: dark ? APPColors.darkGrey : APPColors.grey,
-            thickness: 0.5,
-            indent: 60,
-            endIndent: 5,
+          child: Container(
+            height: 1.5,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.transparent,
+                  dark ? APPColors.darkGrey : APPColors.primary.withOpacity(0.5),
+                ],
+              ),
+            ),
           ),
         ),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+          margin: const EdgeInsets.symmetric(horizontal: 20),
           decoration: BoxDecoration(
-            color: dark ? Colors.black12 : Colors.white.withOpacity(0.8),
-            borderRadius: BorderRadius.circular(20),
+            gradient: dark
+                ? LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [APPColors.dark.withOpacity(0.2), APPColors.dark.withOpacity(0.2)],
+                  )
+                : APPColors.ceylonOceanGradient.scale(0.1),
+            borderRadius: BorderRadius.circular(30),
             border: Border.all(
               color: dark ? APPColors.darkGrey : APPColors.primary.withOpacity(0.5),
-              width: 0.5,
+              width: 1,
             ),
           ),
-          child: Text(dividerText, style: Theme.of(context).textTheme.labelMedium),
+          child: Text(
+            dividerText,
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  color: dark ? APPColors.textWhite.withOpacity(0.7) : APPColors.primary,
+                  fontWeight: FontWeight.w500,
+                ),
+          ),
         ),
         Flexible(
-          child: Divider(
-            color: dark ? APPColors.darkGrey : APPColors.grey,
-            thickness: 0.5,
-            indent: 5,
-            endIndent: 60,
+          child: Container(
+            height: 1.5,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  dark ? APPColors.darkGrey : APPColors.primary.withOpacity(0.5),
+                  Colors.transparent,
+                ],
+              ),
+            ),
           ),
         ),
       ],
