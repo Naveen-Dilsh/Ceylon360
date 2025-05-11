@@ -16,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
     NatureSpot(
       name: "Sigiriya",
       description: "Ancient rock fortress with panoramic views",
-      imageUrl: "assets/images/sigiriya.jpg",
+      imageUrl: "",
     ),
     NatureSpot(
       name: "Ella",
