@@ -60,6 +60,12 @@ dependencies:
   cloud_firestore: ^5.6.5
   google_sign_in: ^6.3.0
 
+  # Images & Media
+  image_picker: ^1.0.4
+  mime: ^1.0.4
+
+  cloudinary_public: ^0.23.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

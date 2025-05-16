@@ -1,4 +1,3 @@
-import 'package:ceyloan_360/utils/formatters/formatter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
@@ -9,7 +8,12 @@ class UserModel {
   final String username;
   final String email;
   final String phoneNumber;
-  final String profilePicture;
+  String profilePicture;
+  // New fields for media
+  final List<String> mediaUrls;
+  final Map<String, dynamic> mediaMetadata;
+  final DateTime updatedAt;
+  final DateTime createdAt;
 
   UserModel({
     required this.id,
@@ -19,11 +23,16 @@ class UserModel {
     required this.email,
     required this.phoneNumber,
     required this.profilePicture,
-  });
+    this.mediaUrls = const [],
+    this.mediaMetadata = const {},
+    DateTime? updatedAt,
+    DateTime? createdAt,
+  })  : this.updatedAt = updatedAt ?? DateTime.now(),
+        this.createdAt = createdAt ?? DateTime.now();
 
   String get fullName => '$firstName $lastName';
 
-  String get formattedPhoneNo => APPFormatter.formatPhoneNumber(phoneNumber);
+  String get formattedPhoneNo => formatPhoneNumber(phoneNumber);
 
   static List<String> nameParts(fullName) => fullName.split(' ');
 
@@ -47,28 +56,22 @@ class UserModel {
       );
 
   static String formatDate(DateTime date) {
-    return DateFormat('dd-MM-yyyy').format(date); // Customize the date format as needed
+    return DateFormat('dd-MM-yyyy').format(date);
   }
 
   static String formatCurrency(double amount) {
-    return NumberFormat.currency(locale: 'en_US', symbol: '\$')
-        .format(amount); // Customize the currency locale and symbol as needed
+    return NumberFormat.currency(locale: 'en_US', symbol: '\$').format(amount);
   }
 
   static String formatPhoneNumber(String phoneNumber) {
-    // Assuming a 10-digit US phone number format: (123) 456-7890
     if (phoneNumber.length == 10) {
       return '(${phoneNumber.substring(0, 3)}) ${phoneNumber.substring(3, 6)}-${phoneNumber.substring(6)}';
     }
     return phoneNumber;
   }
 
-  // Add more custom phone number formatting logic for different formats if needed
   static String formatInternationalPhoneNumber(String phoneNumber) {
-    // Remove any non-digit characters
     var digitsOnly = phoneNumber.replaceAll(RegExp(r'\D'), '');
-
-    // Format the country code, digitally
     return digitsOnly;
   }
 
@@ -81,32 +84,61 @@ class UserModel {
       'Email': email,
       'PhoneNumber': phoneNumber,
       'ProfilePicture': profilePicture,
+      'MediaUrls': mediaUrls,
+      'MediaMetadata': mediaMetadata,
+      'UpdatedAt': Timestamp.fromDate(updatedAt),
+      'CreatedAt': Timestamp.fromDate(createdAt),
     };
+  }
+
+  // Create a copy of this user with updated fields
+  UserModel copyWith({
+    String? id,
+    String? firstName,
+    String? lastName,
+    String? username,
+    String? email,
+    String? phoneNumber,
+    String? profilePicture,
+    List<String>? mediaUrls,
+    Map<String, dynamic>? mediaMetadata,
+    DateTime? updatedAt,
+  }) {
+    return UserModel(
+      id: id ?? this.id,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      username: username ?? this.username,
+      email: email ?? this.email,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      profilePicture: profilePicture ?? this.profilePicture,
+      mediaUrls: mediaUrls ?? this.mediaUrls,
+      mediaMetadata: mediaMetadata ?? this.mediaMetadata,
+      updatedAt: updatedAt ?? DateTime.now(),
+      createdAt: this.createdAt,
+    );
   }
 
   // Method to create a UserModel from a Firebase document snapshot
   factory UserModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document) {
     if (document.data() == null) {
-      return UserModel(
-        id: '',
-        firstName: '',
-        lastName: '',
-        username: '',
-        email: '',
-        phoneNumber: '',
-        profilePicture: '',
-      );
+      return UserModel.empty();
     }
 
     final data = document.data()!;
+
     return UserModel(
-      id: data['Id'] ?? '',
+      id: document.id,
       firstName: data['FirstName'] ?? '',
       lastName: data['LastName'] ?? '',
       username: data['Username'] ?? '',
       email: data['Email'] ?? '',
       phoneNumber: data['PhoneNumber'] ?? '',
       profilePicture: data['ProfilePicture'] ?? '',
+      mediaUrls: List<String>.from(data['MediaUrls'] ?? []),
+      mediaMetadata: Map<String, dynamic>.from(data['MediaMetadata'] ?? {}),
+      updatedAt: (data['UpdatedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      createdAt: (data['CreatedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
     );
   }
 }

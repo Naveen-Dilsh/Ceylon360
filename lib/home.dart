@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import 'data/repositories/authentication/authentication_repository.dart';
 import 'features/authentication/screens/login/login.dart';
+import 'features/personalization/screens/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -154,10 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            // For development purposes
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Booking feature coming soon!')),
-                            );
+                            Get.to(() => const ProfileScreen());
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green.shade800,
