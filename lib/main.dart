@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'data/repositories/authentication/authentication_repository.dart';
+import 'data/services/cloudinary/cloudinary_service.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -26,6 +27,9 @@ Future<void> main() async {
   );
 
   //TODO: Initialize Authentication
+
+  // Initialize Cloudinary Service
+  Get.put(CloudinaryService());
 
   //Load All the material Design / Themes / Localization / Bindings
   runApp(const App());
