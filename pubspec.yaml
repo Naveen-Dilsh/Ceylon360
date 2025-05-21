@@ -45,7 +45,9 @@ dependencies:
   smooth_page_indicator: ^1.2.1
   animate_do: ^4.2.0
 
+
   # ICONS
+
   cupertino_icons: ^1.0.8
   iconsax_flutter: ^1.0.0
 

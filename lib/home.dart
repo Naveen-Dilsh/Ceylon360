@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../screens/hotels/hotel_list_screen.dart';
+
 
 import 'data/repositories/authentication/authentication_repository.dart';
 import 'features/authentication/screens/login/login.dart';
