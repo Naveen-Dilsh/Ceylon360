@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../models/hotel_model.dart';
-import '../../services/places_service.dart';
+import '../../services/hotel_places_service.dart';
 
 class HotelDetailScreen extends StatelessWidget {
   final Hotel hotel;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/hotel_model.dart';
-import '../../services/places_service.dart';
+import '../../services/hotel_places_service.dart';
 import '../../widgets/hotel_card.dart';
 import 'hotel_detail_screen.dart';
 
