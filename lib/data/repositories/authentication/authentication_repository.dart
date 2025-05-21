@@ -29,11 +29,12 @@ class AuthenticationRepository extends GetxController {
     final user = _auth.currentUser;
     if (user != null) {
       if (user.emailVerified) {
-        Get.offAll(() => const HomeScreen());
+        Get.offAll(() => const HomePage());
       } else {
         Get.offAll(() => VerifyEmailScreen(
-              email: _auth.currentUser?.email,
-            ));
+          email: _auth.currentUser?.email,
+        ));
+
       }
     } else {
       //Local Storage
@@ -173,5 +174,5 @@ class AuthenticationRepository extends GetxController {
     }
   }
 
-  /// [DeleteUser] - Remove user Auth and Firestore Account
+
 }
