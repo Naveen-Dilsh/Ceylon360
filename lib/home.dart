@@ -6,7 +6,6 @@ import '../screens/hotels/hotel_list_screen.dart';
 import 'data/repositories/authentication/authentication_repository.dart';
 import 'features/authentication/screens/login/login.dart';
 import 'features/personalization/screens/profile_screen.dart';
-
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../pages/translation/translation_screen.dart';
@@ -975,6 +974,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
+
                   name,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
@@ -1101,3 +1101,4 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
