@@ -7,7 +7,6 @@ import 'data/repositories/authentication/authentication_repository.dart';
 import 'features/authentication/screens/login/login.dart';
 import 'features/personalization/screens/profile_screen.dart';
 
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
