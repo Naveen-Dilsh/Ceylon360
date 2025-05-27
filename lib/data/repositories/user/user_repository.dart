@@ -97,16 +97,17 @@ class UserRepository extends GetxController {
   }
 
   /// Upload profile picture to Cloudinary and update user record
+  /// Upload profile picture to Cloudinary and update user record
   Future<String> uploadProfilePicture(String userId, File imageFile) async {
     try {
       // Upload image to Cloudinary
       final imageUrl = await _cloudinaryService.uploadImage(imageFile);
 
-      // Update user profile picture in Firestore
-      await _usersCollection.doc(userId).update({
+      // FIXED: Use set with merge instead of update
+      await _usersCollection.doc(userId).set({
         'ProfilePicture': imageUrl,
         'UpdatedAt': Timestamp.fromDate(DateTime.now()),
-      });
+      }, SetOptions(merge: true));
 
       return imageUrl;
     } on FirebaseException catch (e) {

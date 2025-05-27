@@ -7,6 +7,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../../../features/authentication/screens/login/login.dart';
 import '../../../features/authentication/screens/onboarding/onboarding.dart';
 import '../../../features/authentication/screens/signup/verify_email.dart';
+import '../../../features/personalization/controllers/user_controller.dart';
 import '../../../home.dart';
 import '../../../utils/exceptions/exception.dart';
 
@@ -32,9 +33,8 @@ class AuthenticationRepository extends GetxController {
         Get.offAll(() => const HomePage());
       } else {
         Get.offAll(() => VerifyEmailScreen(
-          email: _auth.currentUser?.email,
-        ));
-
+              email: _auth.currentUser?.email,
+            ));
       }
     } else {
       //Local Storage
@@ -109,6 +109,7 @@ class AuthenticationRepository extends GetxController {
   /*--------------------------------Federated identity & social sign-in--------------------------------*/
 
   /// [GoogleAuthentication] - Google
+  /// [GoogleAuthentication] - Google
   Future<UserCredential> signInWithGoogle() async {
     try {
       print('Starting Google Sign-In process');
@@ -137,9 +138,26 @@ class AuthenticationRepository extends GetxController {
       final userCredential = await _auth.signInWithCredential(credentials);
       print('Firebase authentication successful');
 
-      return userCredential;
+      // ADDED: Handle user document creation
+      final userController = Get.put(UserController());
 
-      //once signed in, return the UserCredential
+      if (userCredential.additionalUserInfo?.isNewUser == true) {
+        // New user - create document
+        print('New Google user detected, creating user document');
+        await userController.saveUserRecord(userCredential);
+      } else {
+        // Existing user - ensure document exists
+        print('Existing Google user detected, checking document');
+        try {
+          await userController.fetchUserData();
+          print('User document found');
+        } catch (e) {
+          print('User document not found, creating one');
+          await userController.saveUserRecord(userCredential);
+        }
+      }
+
+      return userCredential;
     } on FirebaseAuthException catch (e) {
       throw APPFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
@@ -173,5 +191,4 @@ class AuthenticationRepository extends GetxController {
       throw "something went wrong. Please try again later";
     }
   }
-
 }
