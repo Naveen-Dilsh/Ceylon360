@@ -42,7 +42,7 @@ class AuthenticationRepository extends GetxController {
       //check if it's the first time launching app
       deviceStorage.read('IsFirstTime') != true
           ? Get.offAll(() => const LoginScreen())
-          : Get.offAll(() => const OnboardingScreen());
+          : Get.offAll(() => const ProfessionalOnboardingScreen());
     }
 
     // Remove this duplicate code block:
@@ -173,6 +173,5 @@ class AuthenticationRepository extends GetxController {
       throw "something went wrong. Please try again later";
     }
   }
-
 
 }

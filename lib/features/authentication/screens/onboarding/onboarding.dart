@@ -1,54 +1,63 @@
-import 'package:ceyloan_360/features/authentication/screens/onboarding/widgets/onboarding_circular.dart';
-import 'package:ceyloan_360/features/authentication/screens/onboarding/widgets/onboarding_dot_navigation.dart';
-import 'package:ceyloan_360/features/authentication/screens/onboarding/widgets/onboarding_page.dart';
-import 'package:ceyloan_360/features/authentication/screens/onboarding/widgets/onboarding_skip.dart';
-import 'package:ceyloan_360/utils/constants/image_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ceyloan_360/features/authentication/controllers/onboarding/onboarding_controller.dart';
+import 'package:ceyloan_360/utils/constants/colors.dart';
+import 'package:ceyloan_360/utils/constants/image_strings.dart';
 
-import '../../controllers/onboarding/onboarding_controller.dart';
+import 'widgets/onboarding_circular.dart';
+import 'widgets/onboarding_page.dart';
+import 'widgets/onboarding_skip.dart';
 
-class OnboardingScreen extends StatelessWidget {
-  const OnboardingScreen({super.key});
+class ProfessionalOnboardingScreen extends StatelessWidget {
+  const ProfessionalOnboardingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(OnboardingController());
+
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
-          /// Horizontal Scrollable Pages
+          // Page View
           PageView(
             controller: controller.pageController,
             onPageChanged: controller.updatePageIndicator,
             children: const [
-              OnBoardingPage(
-                image: APPImages.onBoardingImage1,
-                title: "Discover New Horizons",
-                subTitle: "Explore fascinating destinations and uncover hidden gems around the world",
+              // Page 1: Heritage & Culture
+              ProfessionalOnBoardingPage(
+                backgroundImage: APPImages.onBoardingImage1,
+                title: "Ancient\nWonders",
+                subtitle: "UNESCO World Heritage",
+                description:
+                    "Discover 2,500 years of rich history across 8 UNESCO World Heritage sites, from ancient kingdoms to colonial architecture.",
+                overlayColor: APPColors.primary,
               ),
-              OnBoardingPage(
-                image: APPImages.onBoardingImage2,
-                title: "Local Insights & Culture",
-                subTitle: "Learn about local traditions, cuisine, and must-visit attractions in each country",
+
+              // Page 2: Natural Beauty
+              ProfessionalOnBoardingPage(
+                backgroundImage: APPImages.onBoardingImage2,
+                title: "Natural\nParadise",
+                subtitle: "Biodiversity Hotspot",
+                description:
+                    "Experience diverse ecosystems from pristine beaches to misty mountains, home to elephants, leopards, and blue whales.",
+                overlayColor: APPColors.ceylonTeal,
               ),
-              OnBoardingPage(
-                image: APPImages.onBoardingImage3,
-                title: "Plan Your Perfect Journey",
-                subTitle: "Personalized travel recommendations tailored to your preferences and interests",
+
+              // Page 3: Authentic Experiences
+              ProfessionalOnBoardingPage(
+                backgroundImage: APPImages.onBoardingImage3,
+                title: "Authentic\nExperiences",
+                subtitle: "Local Culture & Cuisine",
+                description:
+                    "Immerse yourself in vibrant local culture, savor world-famous Ceylon tea, and taste authentic Sri Lankan cuisine.",
+                overlayColor: APPColors.secondary,
               ),
-              // PageView continues...
             ],
           ),
 
-          /// Skip Button
-          const OnBoardingSkip(),
-
-          /// Dot Navigation Indicator
-          const OnBoardingDotNavigation(),
-
-          /// Circular Button
-          const OnBoardingNextButton(),
+          // Bottom Controls
+          const ProfessionalOnBoardingControls(),
         ],
       ),
     );
