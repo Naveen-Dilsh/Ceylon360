@@ -32,8 +32,9 @@ class AuthenticationRepository extends GetxController {
         Get.offAll(() => const HomePage());
       } else {
         Get.offAll(() => VerifyEmailScreen(
-              email: _auth.currentUser?.email,
-            ));
+          email: _auth.currentUser?.email,
+        ));
+
       }
     } else {
       //Local Storage
@@ -172,4 +173,5 @@ class AuthenticationRepository extends GetxController {
       throw "something went wrong. Please try again later";
     }
   }
+
 }
