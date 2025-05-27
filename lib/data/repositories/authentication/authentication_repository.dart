@@ -40,11 +40,7 @@ class AuthenticationRepository extends GetxController {
       deviceStorage.writeIfNull('IsFirstTime', true);
       //check if it's the first time launching app
       deviceStorage.read('IsFirstTime') != true
-<<<<<<< Updated upstream
           ? Get.offAll(() => const LoginScreen())
-=======
-          ? Get.offAll(() => const ProfessionalOnboardingScreen())
->>>>>>> Stashed changes
           : Get.offAll(() => const ProfessionalOnboardingScreen());
     }
 
