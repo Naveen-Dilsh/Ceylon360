@@ -1,19 +1,32 @@
-import 'package:ceyloan_360/features/authentication/controllers/onboarding/onboarding_controller.dart';
-import 'package:ceyloan_360/utils/constants/sizes.dart';
-import 'package:ceyloan_360/utils/device/device_utility.dart';
 import 'package:flutter/material.dart';
+import 'package:ceyloan_360/features/authentication/controllers/onboarding/onboarding_controller.dart';
 
-class OnBoardingSkip extends StatelessWidget {
-  const OnBoardingSkip({
-    super.key,
-  });
+class ProfessionalOnBoardingSkip extends StatelessWidget {
+  const ProfessionalOnBoardingSkip({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: APPDeviceUtils.getAppBarHeight() * 0.85,
-      right: APPSizes.defaultSpace,
-      child: TextButton(onPressed: () => OnboardingController.instance.skipPage(), child: const Text('Skip')),
+      top: 60,
+      right: 24,
+      child: TextButton(
+        onPressed: () => OnboardingController.instance.skipPage(),
+        style: TextButton.styleFrom(
+          backgroundColor: Colors.black.withOpacity(0.3),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
+        child: const Text(
+          'Skip',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
     );
   }
 }

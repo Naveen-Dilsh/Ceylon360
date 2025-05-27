@@ -29,7 +29,7 @@ class AuthenticationRepository extends GetxController {
     final user = _auth.currentUser;
     if (user != null) {
       if (user.emailVerified) {
-        Get.offAll(() => const HomeScreen());
+        Get.offAll(() => const HomePage());
       } else {
         Get.offAll(() => VerifyEmailScreen(
               email: _auth.currentUser?.email,
@@ -41,7 +41,7 @@ class AuthenticationRepository extends GetxController {
       //check if it's the first time launching app
       deviceStorage.read('IsFirstTime') != true
           ? Get.offAll(() => const LoginScreen())
-          : Get.offAll(() => const OnboardingScreen());
+          : Get.offAll(() => const ProfessionalOnboardingScreen());
     }
 
     // Remove this duplicate code block:
@@ -172,6 +172,4 @@ class AuthenticationRepository extends GetxController {
       throw "something went wrong. Please try again later";
     }
   }
-
-  /// [DeleteUser] - Remove user Auth and Firestore Account
 }

@@ -1,9 +1,8 @@
 /// This class contains all the App Images in String formats.
 class APPImages {
   // -- App Logos
-  static const String darkAppLogo = "assets/logos/Google.png";
-  static const String lightAppLogo = "assets/logos/Google.png";
-
+  static const String darkAppLogo = "assets/logos/Ceyloan360.png";
+  static const String lightAppLogo = "assets/logos/Ceyloan360.png";
   static const String backgroundImage = "assets/images/onBoarding_images/back.jpg";
 
   // -- Social Logos
@@ -11,9 +10,9 @@ class APPImages {
   static const String facebook = "assets/logos/Facebook.png";
 
   // -- OnBoarding Images
-  static const String onBoardingImage1 = "assets/images/onBoarding_images/Onboard1.gif";
-  static const String onBoardingImage2 = "assets/images/onBoarding_images/Onboard1.gif";
-  static const String onBoardingImage3 = "assets/images/onBoarding_images/Onboard1.gif";
+  static const String onBoardingImage1 = "assets/images/onBoarding_images/OnboardScreen1.jpeg";
+  static const String onBoardingImage2 = "assets/images/onBoarding_images/OnBoardnew.jpg";
+  static const String onBoardingImage3 = "assets/images/onBoarding_images/OnBoard3.jpeg";
 
   // -- Animation Images
   static const String productsIllustration = "assets/animations/boy.gif";
@@ -30,4 +29,9 @@ class APPImages {
 
   //
   static const String ceylonBackground = "assets/images/onBoarding_images/Sigiriya 1.jpeg";
+  static const String sigiriyaBackground = "assets/images/onBoarding_images/Sigiriya 1.jpeg";
+  static const String templeIcon = "assets/images/onBoarding_images/Sigiriya 1.jpeg";
+  static const String natureIcon = "assets/images/onBoarding_images/Sigiriya 1.jpeg";
+  static const String cultureIcon = "assets/images/onBoarding_images/Sigiriya 1.jpeg";
+  static const String teaPlantationBackground = "assets/images/onBoarding_images/Sigiriya 1.jpeg";
 }
