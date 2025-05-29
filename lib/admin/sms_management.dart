@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,10 +23,6 @@ class _SMSManagementState extends State<SMSManagement> {
   @override
   void initState() {
     super.initState();
-    smtpServer = gmail(
-      dotenv.env["GMAIL_EMAIL"]!,
-      dotenv.env["GMAIL_PASSWORD"]!,
-    );
   }
 
   String? _getCarrierEmail(String carrier, String phoneNumber) {
@@ -61,7 +56,7 @@ class _SMSManagementState extends State<SMSManagement> {
     }
 
     final message = Message()
-      ..from = Address(dotenv.env["GMAIL_EMAIL"]!, 'SMS Bot')
+      ..from = Address('SMS Bot')
       ..recipients.add(smsEmail)
       ..subject = ''
       ..text = body;
@@ -107,9 +102,7 @@ class _SMSManagementState extends State<SMSManagement> {
                 controller: _phoneController,
                 decoration: const InputDecoration(labelText: 'Phone Number'),
                 keyboardType: TextInputType.phone,
-                validator: (value) => value == null || value.isEmpty
-                    ? 'Enter phone number'
-                    : null,
+                validator: (value) => value == null || value.isEmpty ? 'Enter phone number' : null,
               ),
               DropdownButtonFormField<String>(
                 decoration: const InputDecoration(labelText: 'Select Carrier'),
@@ -123,15 +116,13 @@ class _SMSManagementState extends State<SMSManagement> {
                     )
                     .toList(),
                 onChanged: (value) => setState(() => _selectedCarrier = value),
-                validator: (value) =>
-                    value == null || value.isEmpty ? 'Select a carrier' : null,
+                validator: (value) => value == null || value.isEmpty ? 'Select a carrier' : null,
               ),
               TextFormField(
                 controller: _messageController,
                 decoration: const InputDecoration(labelText: 'Message'),
                 maxLines: 3,
-                validator: (value) =>
-                    value == null || value.isEmpty ? 'Enter message' : null,
+                validator: (value) => value == null || value.isEmpty ? 'Enter message' : null,
               ),
               const SizedBox(height: 20),
               ElevatedButton(

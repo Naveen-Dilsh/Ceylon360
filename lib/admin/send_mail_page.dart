@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SendMailPage extends StatefulWidget {
@@ -23,10 +22,6 @@ class _SendMailPageState extends State<SendMailPage> {
   @override
   void initState() {
     super.initState();
-    gmailSmtp = gmail(
-      dotenv.env["GMAIL_EMAIL"]!,
-      dotenv.env["GMAIL_PASSWORD"]!,
-    );
   }
 
   Future<void> sendMailFromGmail() async {
@@ -38,7 +33,7 @@ class _SendMailPageState extends State<SendMailPage> {
     final body = _bodyController.text.trim();
 
     final message = Message()
-      ..from = Address(dotenv.env["GMAIL_EMAIL"]!, 'Confirmation Bot')
+      ..from = Address('Confirmation Bot')
       ..recipients.add(recipient)
       ..subject = subject
       ..text = body;
@@ -49,10 +44,9 @@ class _SendMailPageState extends State<SendMailPage> {
 
       await FirebaseFirestore.instance.collection('EmailLogs').add({
         'to': recipient,
-        'from': dotenv.env["GMAIL_EMAIL"],
+        'from': ["GMAIL_EMAIL"],
         'subject': subject,
-        'messagePreview':
-            body.length > 100 ? '${body.substring(0, 100)}...' : body,
+        'messagePreview': body.length > 100 ? '${body.substring(0, 100)}...' : body,
         'status': 'sent',
         'timestamp': FieldValue.serverTimestamp(),
         'sentBy': adminId,
@@ -68,7 +62,7 @@ class _SendMailPageState extends State<SendMailPage> {
     } on MailerException catch (e) {
       await FirebaseFirestore.instance.collection('EmailLogs').add({
         'to': recipient,
-        'from': dotenv.env["GMAIL_EMAIL"],
+        'from': ["GMAIL_EMAIL"],
         'subject': subject,
         'status': 'failed',
         'timestamp': FieldValue.serverTimestamp(),

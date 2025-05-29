@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:project1/admin/email/email_send_details.dart';
-import 'package:project1/admin/sms/send_sms_details.dart';
+
+import 'email_send_details.dart';
+import 'send_sms_details.dart';
 
 class AnalyticsDashboard extends StatefulWidget {
   const AnalyticsDashboard({super.key});
@@ -33,12 +34,10 @@ class AnalyticsDashboardState extends State<AnalyticsDashboard> {
       final usersSnapshot = await _firestore.collection('Users').count().get();
       _totalUsers = usersSnapshot.count ?? 0;
 
-      final apiCallsSnapshot =
-          await _firestore.collection('ApiLogs').count().get();
+      final apiCallsSnapshot = await _firestore.collection('ApiLogs').count().get();
       _totalApiCalls = apiCallsSnapshot.count ?? 0;
 
-      final emailsSnapshot =
-          await _firestore.collection('EmailLogs').count().get();
+      final emailsSnapshot = await _firestore.collection('EmailLogs').count().get();
       _totalEmails = emailsSnapshot.count ?? 0;
 
       final smsSnapshot = await _firestore.collection('SMSLogs').count().get();
