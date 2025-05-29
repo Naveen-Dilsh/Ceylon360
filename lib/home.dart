@@ -144,7 +144,8 @@ class _HomePageState extends State<HomePage> {
     for (var destination in sriLankanDestinations) {
       try {
         final response = await http.get(
-          Uri.parse('https://maps.googleapis.com/maps/api/place/details/json?place_id=${destination['placeId']}&fields=name,photos,rating&key=$apiKey'),
+          Uri.parse(
+              'https://maps.googleapis.com/maps/api/place/details/json?place_id=${destination['placeId']}&fields=name,photos,rating&key=$apiKey'),
         );
 
         if (response.statusCode == 200) {
@@ -223,7 +224,8 @@ class _HomePageState extends State<HomePage> {
     try {
       // Using textual search for hotels in Colombo
       final response = await http.get(
-        Uri.parse('https://maps.googleapis.com/maps/api/place/textsearch/json?query=top+hotels+in+colombo+sri+lanka&type=lodging&key=$apiKey'),
+        Uri.parse(
+            'https://maps.googleapis.com/maps/api/place/textsearch/json?query=top+hotels+in+colombo+sri+lanka&type=lodging&key=$apiKey'),
       );
 
       if (response.statusCode == 200) {
@@ -287,11 +289,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildHotelCard(
-      String name,
-      String address,
-      String rating,
-      String imageUrl,
-      ) {
+    String name,
+    String address,
+    String rating,
+    String imageUrl,
+  ) {
     return Container(
       height: 100,
       decoration: BoxDecoration(
@@ -413,7 +415,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Hi, Heshan',
+                        'Hi, Welcome',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 24,
@@ -439,7 +441,6 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ],
                   ),
-
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -712,11 +713,11 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              _launchURL('https://www.srilankan.com/en_uk/go?gad_source=1&gad_campaignid=20165188994&gbraid=0AAAAADj5G9qeLck-fGflIRO9fqtSwIhJp&gclid=Cj0KCQjwxdXBBhDEARIsAAUkP6ikZ0ani8qYSC0Ak5BGpcQ0U3u_5UqBxLJLib7dzB41grcwhgXPjcUaAuswEALw_wcB');
+                              _launchURL(
+                                  'https://www.srilankan.com/en_uk/go?gad_source=1&gad_campaignid=20165188994&gbraid=0AAAAADj5G9qeLck-fGflIRO9fqtSwIhJp&gclid=Cj0KCQjwxdXBBhDEARIsAAUkP6ikZ0ani8qYSC0Ak5BGpcQ0U3u_5UqBxLJLib7dzB41grcwhgXPjcUaAuswEALw_wcB');
                             },
                             child: _buildCategoryIcon(Icons.flight, 'Flights', const Color(0xFFB2D8D8)),
                           ),
-
                           GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -726,9 +727,6 @@ class _HomePageState extends State<HomePage> {
                             },
                             child: _buildCategoryIcon(Icons.travel_explore, 'journey', const Color(0xFFB2D8D8)),
                           ),
-
-
-
                           GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -747,7 +745,6 @@ class _HomePageState extends State<HomePage> {
                             },
                             child: _buildCategoryIcon(Icons.person_outline, 'Contacts', const Color(0xFFB2D8D8)),
                           ),
-
                           GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -757,9 +754,6 @@ class _HomePageState extends State<HomePage> {
                             },
                             child: _buildCategoryIcon(Icons.local_taxi, 'Taxi', const Color(0xFFB2D8D8)),
                           ),
-
-
-
                         ],
                       ),
                     ),
@@ -803,26 +797,26 @@ class _HomePageState extends State<HomePage> {
                       child: isLoading
                           ? const Center(child: CircularProgressIndicator())
                           : ListView.builder(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 15,
-                          vertical: 10,
-                        ),
-                        scrollDirection: Axis.horizontal,
-                        itemCount: destinations.length,
-                        itemBuilder: (context, index) {
-                          final destination = destinations[index];
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 15),
-                            child: _buildDestinationCard(
-                              destination.name,
-                              destination.location,
-                              destination.rating,
-                              destination.price,
-                              getPhotoUrl(destination.photoReference),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 15,
+                                vertical: 10,
+                              ),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: destinations.length,
+                              itemBuilder: (context, index) {
+                                final destination = destinations[index];
+                                return Padding(
+                                  padding: const EdgeInsets.only(right: 15),
+                                  child: _buildDestinationCard(
+                                    destination.name,
+                                    destination.location,
+                                    destination.rating,
+                                    destination.price,
+                                    getPhotoUrl(destination.photoReference),
+                                  ),
+                                );
+                              },
                             ),
-                          );
-                        },
-                      ),
                     ),
 
                     // Hotel recommendations
@@ -862,22 +856,22 @@ class _HomePageState extends State<HomePage> {
                     isLoading
                         ? const Center(child: CircularProgressIndicator())
                         : Column(
-                      children: hotels.map((hotel) {
-                        return Padding(
-                          padding: const EdgeInsets.only(
-                            left: 20,
-                            right: 20,
-                            bottom: 15,
+                            children: hotels.map((hotel) {
+                              return Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 20,
+                                  right: 20,
+                                  bottom: 15,
+                                ),
+                                child: _buildHotelCard(
+                                  hotel.name,
+                                  hotel.address,
+                                  hotel.rating,
+                                  getPhotoUrl(hotel.photoReference),
+                                ),
+                              );
+                            }).toList(),
                           ),
-                          child: _buildHotelCard(
-                            hotel.name,
-                            hotel.address,
-                            hotel.rating,
-                            getPhotoUrl(hotel.photoReference),
-                          ),
-                        );
-                      }).toList(),
-                    ),
 
                     const SizedBox(height: 15),
                   ],
@@ -977,12 +971,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildDestinationCard(
-      String name,
-      String location,
-      String rating,
-      String price,
-      String imageUrl,
-      ) {
+    String name,
+    String location,
+    String rating,
+    String price,
+    String imageUrl,
+  ) {
     return Container(
       width: 160,
       margin: EdgeInsets.zero,
@@ -1153,4 +1147,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
