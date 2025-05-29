@@ -63,6 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+<<<<<<< Updated upstream
             // Hero banner
             Container(
               height: 200,
@@ -82,6 +83,42 @@ class _HomeScreenState extends State<HomeScreen> {
                     colors: [
                       Colors.transparent,
                       Colors.black.withOpacity(0.7),
+=======
+            // Header with greeting and profile
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 10, 20, 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Hi, Welcome',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Row(
+                        children: const [
+                          Icon(
+                            Icons.circle,
+                            color: Colors.amber,
+                            size: 16,
+                          ),
+                          SizedBox(width: 4),
+                          Text(
+                            '2,000 points',
+                            style: TextStyle(
+                              color: Colors.amber,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+>>>>>>> Stashed changes
                     ],
                   ),
                 ),
