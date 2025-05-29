@@ -44,6 +44,8 @@ dependencies:
   flutter_native_splash: ^2.3.2
   smooth_page_indicator: ^1.2.1
   animate_do: ^4.2.0
+  mailer: ^6.4.1
+  shared_preferences: ^2.5.3
 
 
   # ICONS

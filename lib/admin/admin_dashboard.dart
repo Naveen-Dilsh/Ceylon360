@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:project1/admin/add_new_admin.dart';
-import 'package:project1/admin/analytical_dashboard.dart';
-import 'package:project1/admin/email/send_mail_page.dart';
-import 'package:project1/admin/google_api_manage.dart';
-import 'package:project1/admin/user_management.dart';
-import 'package:project1/admin/sms/sms_management.dart';
-import 'package:project1/admin/admin_login_page.dart';
+
+import 'add_new_admin.dart';
+import 'admin_login_page.dart';
+import 'analytical_dashboard.dart';
+import 'google_api_manage.dart';
+import 'send_mail_page.dart';
+import 'sms_management.dart';
+import 'user_management.dart';
 
 class AdminDashboard extends StatelessWidget {
   const AdminDashboard({super.key});
