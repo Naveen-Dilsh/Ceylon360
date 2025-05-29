@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "540730807453",
+    "project_id": "ceyloan-360-9c242",
+    "storage_bucket": "ceyloan-360-9c242.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:540730807453:android:b11043212998ef4115b074",
+        "android_client_info": {
+          "package_name": "com.example.ceyloan_360"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "540730807453-bs5m44dlb6o9ptqk4qslbi55q82l0d76.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ceyloan_360",
+            "certificate_hash": "d987b77996a6f172230461a19a897b9a6d430c04"
+          }
+        },
+        {
+          "client_id": "540730807453-een17t210u08uco8hlidd8c8hfhepsbq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcMbnt0eSAv3A7up9xB2N86EqM7y0_kZM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "540730807453-een17t210u08uco8hlidd8c8hfhepsbq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "540730807453-659idtjjr2hs840cjjimttakpv408eq2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ceyloan360"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
