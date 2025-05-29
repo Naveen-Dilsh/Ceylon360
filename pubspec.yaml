@@ -97,6 +97,7 @@ flutter:
     - assets/icons/
     - assets/logos/
     - assets/animations/
+    - assets/images/journey/
 
 
 #----------------------------------------- LOCAL FONTS ----------------------------------------#
