@@ -3,6 +3,7 @@ flutter_native_splash:
   color_dark: "#272727"
   image: assets/logos/Ceyloan360.png
   image_dark: assets/logos/Ceyloan360.png
+  fullscreen: true
 
   android_12:
     color: "#FFFFFF"

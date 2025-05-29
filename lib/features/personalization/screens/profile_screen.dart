@@ -1,9 +1,17 @@
 import 'dart:io';
+import 'package:ceyloan_360/features/personalization/screens/updateProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
+import '../../../data/repositories/authentication/authentication_repository.dart';
+import '../../../utils/constants/colors.dart';
+import '../../../utils/constants/sizes.dart';
+import '../../../utils/constants/image_strings.dart';
+import '../../../utils/helpers/helper_functions.dart';
 import '../../../utils/popups/dialogs.dart';
 import '../../../utils/popups/loaders.dart';
+import '../../authentication/screens/login/login.dart';
 import '../controllers/user_controller.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -12,155 +20,363 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(UserController());
+    final dark = APPHelperFunctions.isDarkMode(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () => Get.to(() => const UpdateProfileScreen()),
+      body: Stack(
+        children: [
+          // Background with Ceylon theme
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  APPColors.primary,
+                  APPColors.ceylonTeal,
+                  dark ? APPColors.dark : APPColors.light,
+                ],
+                stops: const [0.0, 0.3, 1.0],
+              ),
+            ),
+          ),
+
+          // Content
+          SafeArea(
+            child: Obx(
+              () => controller.isLoading.value
+                  ? const Center(child: CircularProgressIndicator(color: APPColors.white))
+                  : CustomScrollView(
+                      slivers: [
+                        // Custom App Bar
+                        SliverAppBar(
+                          expandedHeight: 120,
+                          floating: false,
+                          pinned: true,
+                          backgroundColor: Colors.transparent,
+                          elevation: 0,
+                          leading: IconButton(
+                            icon: const Icon(Iconsax.arrow_left, color: APPColors.white),
+                            onPressed: () => Get.back(),
+                          ),
+                          actions: [
+                            IconButton(
+                              icon: const Icon(Iconsax.edit, color: APPColors.white),
+                              onPressed: () => Get.to(() => const UpdateProfileScreen()),
+                            ),
+                            IconButton(
+                              icon: const Icon(Iconsax.logout, color: APPColors.white),
+                              onPressed: () => _showLogoutDialog(context, controller),
+                            ),
+                          ],
+                          flexibleSpace: FlexibleSpaceBar(
+                            title: Text(
+                              'My Profile',
+                              style: TextStyle(
+                                color: APPColors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            centerTitle: true,
+                          ),
+                        ),
+
+                        // Profile Content
+                        SliverToBoxAdapter(
+                          child: Column(
+                            children: [
+                              _buildProfileHeader(context, controller),
+                              _buildProfileContent(context, controller, dark),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+            ),
           ),
         ],
       ),
-      body: Obx(
-        () => controller.isLoading.value
-            ? const Center(child: CircularProgressIndicator())
-            : SingleChildScrollView(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildProfileHeader(context, controller),
-                    const SizedBox(height: 24),
-                    _buildUserInfo(controller),
-                    const SizedBox(height: 32),
-                    _buildMediaGallery(context, controller),
-                  ],
-                ),
-              ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddMediaOptions(context, controller),
-        child: const Icon(Icons.add_photo_alternate),
+      floatingActionButton: Container(
+        decoration: BoxDecoration(
+          gradient: APPColors.ceylonOceanGradient,
+          borderRadius: BorderRadius.circular(30),
+          boxShadow: [
+            BoxShadow(
+              color: APPColors.primary.withOpacity(0.4),
+              blurRadius: 15,
+              offset: const Offset(0, 8),
+            ),
+          ],
+        ),
+        child: FloatingActionButton(
+          onPressed: () => _showAddMediaOptions(context, controller),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          child: const Icon(Iconsax.camera, color: APPColors.white),
+        ),
       ),
     );
   }
 
   Widget _buildProfileHeader(BuildContext context, UserController controller) {
-    return Center(
+    return Container(
+      padding: const EdgeInsets.all(APPSizes.defaultSpace),
       child: Column(
         children: [
+          // Profile Picture with Ceylon styling
           Stack(
             children: [
-              GestureDetector(
-                onTap: () => _showProfilePictureOptions(context, controller),
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundColor: Colors.grey.shade200,
-                  backgroundImage: controller.user.value.profilePicture.isNotEmpty
-                      ? NetworkImage(controller.user.value.profilePicture)
-                      : null,
-                  child: controller.user.value.profilePicture.isEmpty
-                      ? const Icon(Icons.person, size: 50, color: Colors.grey)
-                      : null,
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: APPColors.white,
+                    width: 4,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.3),
+                      blurRadius: 20,
+                      offset: const Offset(0, 10),
+                    ),
+                  ],
+                ),
+                child: GestureDetector(
+                  onTap: () => _showProfilePictureOptions(context, controller),
+                  child: CircleAvatar(
+                    radius: 60,
+                    backgroundColor: APPColors.lightGrey,
+                    backgroundImage: controller.user.value.profilePicture.isNotEmpty
+                        ? NetworkImage(controller.user.value.profilePicture)
+                        : null,
+                    child: controller.user.value.profilePicture.isEmpty
+                        ? const Icon(Iconsax.user, size: 60, color: APPColors.darkGrey)
+                        : null,
+                  ),
                 ),
               ),
               Positioned(
-                bottom: 0,
-                right: 0,
+                bottom: 5,
+                right: 5,
                 child: Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: const BoxDecoration(
-                    color: Colors.blue,
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    gradient: APPColors.ceylonSunriseGradient,
                     shape: BoxShape.circle,
+                    border: Border.all(color: APPColors.white, width: 2),
                   ),
                   child: const Icon(
-                    Icons.camera_alt,
-                    color: Colors.white,
+                    Iconsax.camera,
+                    color: APPColors.white,
                     size: 20,
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+
+          const SizedBox(height: APPSizes.spaceBtwItems),
+
+          // User Name
           Text(
             controller.user.value.fullName,
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            '@${controller.user.value.username}',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey,
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  color: APPColors.white,
+                  fontWeight: FontWeight.bold,
                 ),
+          ),
+
+          const SizedBox(height: APPSizes.xs),
+
+          // Username with Ceylon styling
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+            decoration: BoxDecoration(
+              color: APPColors.white.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: APPColors.white.withOpacity(0.3)),
+            ),
+            child: Text(
+              '@${controller.user.value.username}',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: APPColors.white,
+                    fontWeight: FontWeight.w500,
+                  ),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildUserInfo(UserController controller) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Account Information',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
+  Widget _buildProfileContent(BuildContext context, UserController controller, bool dark) {
+    return Container(
+      margin: const EdgeInsets.only(top: APPSizes.spaceBtwSections),
+      decoration: BoxDecoration(
+        color: dark ? APPColors.dark : APPColors.white,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(APPSizes.cardRadiusLg),
+          topRight: Radius.circular(APPSizes.cardRadiusLg),
         ),
-        const Divider(),
-        _infoTile('Email', controller.user.value.email),
-        if (controller.user.value.phoneNumber.isNotEmpty) _infoTile('Phone', controller.user.value.formattedPhoneNo),
-        _infoTile('Joined', _formatDate(controller.user.value.createdAt)),
-        _infoTile('Last Updated', _formatDate(controller.user.value.updatedAt)),
-      ],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 20,
+            offset: const Offset(0, -5),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(APPSizes.defaultSpace),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Drag Handle
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: APPColors.grey,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: APPSizes.spaceBtwSections),
+
+            _buildUserInfo(controller, dark),
+            const SizedBox(height: APPSizes.spaceBtwSections),
+            _buildMediaGallery(context, controller, dark),
+          ],
+        ),
+      ),
     );
   }
 
-  Widget _buildMediaGallery(BuildContext context, UserController controller) {
+  Widget _buildUserInfo(UserController controller, bool dark) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
-              'My Media',
+            Icon(
+              Iconsax.profile_circle,
+              color: APPColors.primary,
+              size: 24,
+            ),
+            const SizedBox(width: APPSizes.sm),
+            Text(
+              'Account Information',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
+                color: dark ? APPColors.white : APPColors.textPrimary,
               ),
-            ),
-            Text(
-              '${controller.userMedia.length} items',
-              style: const TextStyle(color: Colors.grey),
             ),
           ],
         ),
-        const Divider(),
+        const SizedBox(height: APPSizes.spaceBtwItems),
+        Container(
+          padding: const EdgeInsets.all(APPSizes.md),
+          decoration: BoxDecoration(
+            color: dark ? APPColors.darkContainer : APPColors.lightContainer,
+            borderRadius: BorderRadius.circular(APPSizes.cardRadiusMd),
+            border: Border.all(
+              color: APPColors.primary.withOpacity(0.2),
+              width: 1,
+            ),
+          ),
+          child: Column(
+            children: [
+              _ceylonInfoTile(Iconsax.sms, 'Email', controller.user.value.email, dark),
+              if (controller.user.value.phoneNumber.isNotEmpty)
+                _ceylonInfoTile(Iconsax.call, 'Phone', controller.user.value.formattedPhoneNo, dark),
+              _ceylonInfoTile(Iconsax.calendar, 'Joined', _formatDate(controller.user.value.createdAt), dark),
+              _ceylonInfoTile(Iconsax.refresh, 'Last Updated', _formatDate(controller.user.value.updatedAt), dark,
+                  isLast: true),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMediaGallery(BuildContext context, UserController controller, bool dark) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(
+              Iconsax.gallery,
+              color: APPColors.primary,
+              size: 24,
+            ),
+            const SizedBox(width: APPSizes.sm),
+            Text(
+              'My Travel Gallery',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: dark ? APPColors.white : APPColors.textPrimary,
+              ),
+            ),
+            const Spacer(),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              decoration: BoxDecoration(
+                color: APPColors.primary.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                '${controller.userMedia.length} photos',
+                style: TextStyle(
+                  color: APPColors.primary,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 12,
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: APPSizes.spaceBtwItems),
         controller.userMedia.isEmpty
-            ? const Center(
-                child: Padding(
-                  padding: EdgeInsets.all(32.0),
-                  child: Column(
-                    children: [
-                      Icon(Icons.image_not_supported, size: 64, color: Colors.grey),
-                      SizedBox(height: 16),
-                      Text(
-                        'No media added yet',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'Tap the + button to add photos',
-                        style: TextStyle(color: Colors.grey, fontSize: 12),
-                      ),
-                    ],
+            ? Container(
+                padding: const EdgeInsets.all(APPSizes.xl),
+                decoration: BoxDecoration(
+                  color: dark ? APPColors.darkContainer : APPColors.lightContainer,
+                  borderRadius: BorderRadius.circular(APPSizes.cardRadiusMd),
+                  border: Border.all(
+                    color: APPColors.primary.withOpacity(0.2),
+                    width: 1,
                   ),
+                ),
+                child: Column(
+                  children: [
+                    Icon(
+                      Iconsax.camera,
+                      size: 64,
+                      color: APPColors.primary.withOpacity(0.5),
+                    ),
+                    const SizedBox(height: APPSizes.md),
+                    Text(
+                      'No travel memories yet',
+                      style: TextStyle(
+                        color: dark ? APPColors.lightGrey : APPColors.textPrimary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: APPSizes.xs),
+                    Text(
+                      'Start capturing your Ceylon adventures!',
+                      style: TextStyle(
+                        color: APPColors.textSecondary,
+                        fontSize: 12,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
               )
             : GridView.builder(
@@ -176,27 +392,43 @@ class ProfileScreen extends StatelessWidget {
                   final mediaUrl = controller.userMedia[index];
                   return GestureDetector(
                     onTap: () => _showMediaDetails(context, mediaUrl, controller),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.network(
-                        mediaUrl,
-                        fit: BoxFit.cover,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return Center(
-                            child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                                  : null,
-                            ),
-                          );
-                        },
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            color: Colors.grey.shade300,
-                            child: const Icon(Icons.broken_image, color: Colors.white),
-                          );
-                        },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(APPSizes.cardRadiusSm),
+                        border: Border.all(
+                          color: APPColors.primary.withOpacity(0.2),
+                          width: 1,
+                        ),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(APPSizes.cardRadiusSm),
+                        child: Image.network(
+                          mediaUrl,
+                          fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Container(
+                              color: APPColors.lightGrey,
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  color: APPColors.primary,
+                                  value: loadingProgress.expectedTotalBytes != null
+                                      ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                      : null,
+                                ),
+                              ),
+                            );
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              color: APPColors.lightGrey,
+                              child: Icon(
+                                Iconsax.image,
+                                color: APPColors.darkGrey,
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
                   );
@@ -206,20 +438,45 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _infoTile(String title, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+  Widget _ceylonInfoTile(IconData icon, String title, String value, bool dark, {bool isLast = false}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      decoration: BoxDecoration(
+        border: isLast
+            ? null
+            : Border(
+                bottom: BorderSide(
+                  color: APPColors.primary.withOpacity(0.1),
+                  width: 1,
+                ),
+              ),
+      ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          Icon(
+            icon,
+            color: APPColors.primary,
+            size: 20,
+          ),
+          const SizedBox(width: APPSizes.sm),
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.w500,
-              color: Colors.grey,
+              color: APPColors.textSecondary,
             ),
           ),
-          Text(value),
+          const Spacer(),
+          Flexible(
+            child: Text(
+              value,
+              style: TextStyle(
+                color: dark ? APPColors.white : APPColors.textPrimary,
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.end,
+            ),
+          ),
         ],
       ),
     );
@@ -227,6 +484,20 @@ class ProfileScreen extends StatelessWidget {
 
   String _formatDate(DateTime date) {
     return '${date.day}/${date.month}/${date.year}';
+  }
+
+  void _showLogoutDialog(BuildContext context, UserController controller) {
+    APPDialogs.confirmationDialog(
+      title: 'Logout',
+      message: 'Are you sure you want to logout from Ceylon 360?',
+      confirmText: 'Logout',
+      cancelText: 'Cancel',
+      onConfirm: () async {
+        // Implement logout functionality
+        await AuthenticationRepository.instance.logout();
+        Get.offAll(() => const LoginScreen()); // Navigate to login screen
+      },
+    );
   }
 
   void _showProfilePictureOptions(BuildContext context, UserController controller) {
@@ -271,7 +542,6 @@ class ProfileScreen extends StatelessWidget {
       );
 
       if (image != null) {
-        // Add metadata if needed
         final metadata = {
           'timestamp': DateTime.now().millisecondsSinceEpoch,
           'type': 'image',
@@ -291,71 +561,91 @@ class ProfileScreen extends StatelessWidget {
   void _showMediaDetails(BuildContext context, String mediaUrl, UserController controller) {
     showModalBottomSheet(
       context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
+      backgroundColor: Colors.transparent,
       builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.network(
-                  mediaUrl,
-                  height: 200,
-                  fit: BoxFit.contain,
+        final dark = APPHelperFunctions.isDarkMode(context);
+        return Container(
+          decoration: BoxDecoration(
+            color: dark ? APPColors.dark : APPColors.white,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(APPSizes.cardRadiusLg)),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(APPSizes.defaultSpace),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Drag Handle
+                Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: APPColors.grey,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Uploaded on: ${_formatDate(controller.user.value.mediaMetadata[mediaUrl]?['timestamp'] != null ? DateTime.fromMillisecondsSinceEpoch(controller.user.value.mediaMetadata[mediaUrl]['timestamp']) : DateTime.now())}',
-                style: const TextStyle(color: Colors.grey),
-              ),
-              const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _actionButton(
-                    icon: Icons.share,
-                    label: 'Share',
-                    onTap: () {
-                      // Implement sharing functionality
-                      Navigator.pop(context);
-                    },
+
+                const SizedBox(height: APPSizes.spaceBtwItems),
+
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(APPSizes.cardRadiusMd),
+                  child: Image.network(
+                    mediaUrl,
+                    height: 200,
+                    fit: BoxFit.contain,
                   ),
-                  _actionButton(
-                    icon: Icons.download,
-                    label: 'Download',
-                    onTap: () {
-                      // Implement download functionality
-                      Navigator.pop(context);
-                    },
+                ),
+
+                const SizedBox(height: APPSizes.spaceBtwItems),
+
+                Text(
+                  'Captured on: ${_formatDate(DateTime.now())}',
+                  style: TextStyle(
+                    color: APPColors.textSecondary,
+                    fontSize: 14,
                   ),
-                  _actionButton(
-                    icon: Icons.delete,
-                    label: 'Delete',
-                    color: Colors.red,
-                    onTap: () {
-                      Navigator.pop(context);
-                      _confirmDeleteMedia(context, mediaUrl, controller);
-                    },
-                  ),
-                ],
-              ),
-            ],
+                ),
+
+                const SizedBox(height: APPSizes.spaceBtwSections),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _ceylonActionButton(
+                      icon: Iconsax.share,
+                      label: 'Share',
+                      color: APPColors.primary,
+                      onTap: () => Navigator.pop(context),
+                    ),
+                    _ceylonActionButton(
+                      icon: Iconsax.document_download,
+                      label: 'Download',
+                      color: APPColors.ceylonTeal,
+                      onTap: () => Navigator.pop(context),
+                    ),
+                    _ceylonActionButton(
+                      icon: Iconsax.trash,
+                      label: 'Delete',
+                      color: APPColors.error,
+                      onTap: () {
+                        Navigator.pop(context);
+                        _confirmDeleteMedia(context, mediaUrl, controller);
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         );
       },
     );
   }
 
-  Widget _actionButton({
+  Widget _ceylonActionButton({
     required IconData icon,
     required String label,
     required VoidCallback onTap,
-    Color color = Colors.blue,
+    required Color color,
   }) {
     return GestureDetector(
       onTap: onTap,
@@ -363,17 +653,25 @@ class ProfileScreen extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: color.withOpacity(0.1),
               shape: BoxShape.circle,
+              border: Border.all(
+                color: color.withOpacity(0.3),
+                width: 1,
+              ),
             ),
-            child: Icon(icon, color: color),
+            child: Icon(icon, color: color, size: 24),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: APPSizes.xs),
           Text(
             label,
-            style: TextStyle(color: color),
+            style: TextStyle(
+              color: color,
+              fontWeight: FontWeight.w500,
+              fontSize: 12,
+            ),
           ),
         ],
       ),
@@ -382,132 +680,12 @@ class ProfileScreen extends StatelessWidget {
 
   void _confirmDeleteMedia(BuildContext context, String mediaUrl, UserController controller) {
     APPDialogs.confirmationDialog(
-      title: 'Delete Media',
-      message: 'Are you sure you want to delete this media? This action cannot be undone.',
+      title: 'Delete Photo',
+      message: 'Are you sure you want to delete this travel memory? This action cannot be undone.',
       confirmText: 'Delete',
       onConfirm: () async {
         await controller.removeUserMedia(mediaUrl);
       },
-    );
-  }
-}
-
-class UpdateProfileScreen extends StatelessWidget {
-  const UpdateProfileScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final controller = Get.find<UserController>();
-
-    // Form controllers
-    final firstNameController = TextEditingController(text: controller.user.value.firstName);
-    final lastNameController = TextEditingController(text: controller.user.value.lastName);
-    final usernameController = TextEditingController(text: controller.user.value.username);
-    final phoneController = TextEditingController(text: controller.user.value.phoneNumber);
-
-    // Form key for validation
-    final formKey = GlobalKey<FormState>();
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Edit Profile'),
-      ),
-      body: Obx(
-        () => controller.isLoading.value
-            ? const Center(child: CircularProgressIndicator())
-            : Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Personal Information',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: firstNameController,
-                        decoration: const InputDecoration(
-                          labelText: 'First Name',
-                          border: OutlineInputBorder(),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your first name';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: lastNameController,
-                        decoration: const InputDecoration(
-                          labelText: 'Last Name',
-                          border: OutlineInputBorder(),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your last name';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: usernameController,
-                        decoration: const InputDecoration(
-                          labelText: 'Username',
-                          border: OutlineInputBorder(),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a username';
-                          }
-                          if (value.length < 4) {
-                            return 'Username must be at least 4 characters long';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: phoneController,
-                        decoration: const InputDecoration(
-                          labelText: 'Phone Number',
-                          border: OutlineInputBorder(),
-                        ),
-                        keyboardType: TextInputType.phone,
-                      ),
-                      const SizedBox(height: 32),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              controller.updateUserData(
-                                firstName: firstNameController.text,
-                                lastName: lastNameController.text,
-                                username: usernameController.text,
-                                phoneNumber: phoneController.text,
-                              );
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                          ),
-                          child: const Text('Save Changes'),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-      ),
     );
   }
 }
